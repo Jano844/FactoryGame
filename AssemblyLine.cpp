@@ -72,6 +72,7 @@ void AssemblyLine::initParts()
 void AssemblyLine::initDestionation()
 {
 	// Destination
+	newDestination = true;
 	destination = sf::RectangleShape(sf::Vector2f(70, 70));
 	destination.setFillColor(sf::Color(81, 86, 92, 255));
 	destination.setPosition(795, 95);
@@ -95,10 +96,85 @@ void AssemblyLine::initDestionation()
 	drop_square = sf::RectangleShape(sf::Vector2f(40, 40));
 	drop_square.setFillColor(sf::Color::Black);
 	drop_square.setPosition(809, 110);
+}
+
+void	AssemblyLine::resetDestination()
+{
+	srand(time(NULL));
+	int random = rand() % 5;
+	if (random == 0)
+		this->destinationName = "Triangle";
+	if (random == 1)
+		this->destinationName = "Square_rotated";
+	if (random == 2)
+		this->destinationName = "Circle";
+	if (random == 3)
+		this->destinationName = "Rectangle";
+	if (random == 4)
+		this->destinationName = "Square";
+}
+
+void	AssemblyLine::drawDestination(sf::RenderWindow *window)
+{
+	if (newDestination == true) {
+		resetDestination();
+		newDestination = false;
+	}
+	window->draw(destination);
+	if (destinationName == "Triangle")
+		window->draw(drop_triangle);
+	if (destinationName == "Square_rotated")
+		window->draw(drop_square_rotated);
+	if (destinationName == "Circle")
+		window->draw(drop_circle);
+	if (destinationName == "Rectangle")
+		window->draw(drop_rectangle);
+	if (destinationName == "Square")
+		window->draw(drop_square);
 
 }
 
-
+void AssemblyLine::dropPart(Player &player)
+{
+	float dist = sqrt(pow((player.getplayerX() + OFFSETX) - (destination.getPosition().x + 35), 2) + pow(player.getplayerY() - destination.getPosition().y + 35, 2));
+	if (dist > 200)
+		return ;
+	if (destinationName == "Triangle" && partName == "Triangle") {
+		this->partName = "";
+		pickedUp = false;
+		newDestination = true;
+		pickedUp = false;
+		return ;
+	}
+	if (destinationName == "Square_rotated" && partName == "Square_rotated") {
+		this->partName = "";
+		pickedUp = false;
+		newDestination = true;
+		pickedUp = false;
+		return ;
+	}
+	if (destinationName == "Circle" && partName == "Circle") {
+		this->partName = "";
+		pickedUp = false;
+		newDestination = true;
+		pickedUp = false;
+		return ;
+	}
+	if (destinationName == "Rectangle" && partName == "Rectangle") {
+		this->partName = "";
+		pickedUp = false;
+		newDestination = true;
+		pickedUp = false;
+		return ;
+	}
+	if (destinationName == "Square" && partName == "Square") {
+		this->partName = "";
+		pickedUp = false;
+		newDestination = true;
+		pickedUp = false;
+		return ;
+	}
+}
 
 void AssemblyLine::pickUpPart(Player &player)
 {
@@ -133,8 +209,10 @@ void AssemblyLine::pickUpPart(Player &player)
 	}
 	// std::cout << "Picking up " << partName << std::endl;
 	// std::cout << "Min: " << min << std::endl;
-	if (min > 150)
+	if (min > 150) {
+		partName = "";
 		return ;
+	}
 	pickedUp = true;
 	if (partName == "Rectangle")
 		rectangle.setFillColor(sf::Color::Transparent);
@@ -194,6 +272,8 @@ void AssemblyLine::layBack(Player &player)
 
 void AssemblyLine::updateAsseblyLine(bool leverOn, bool pickup, Player &player)
 {
+	if (pickup == true)
+		dropPart(player);
 	if (leverOn == true) {
 		this->leverState = leverOn;
 		if (pickup == true) {
@@ -244,7 +324,7 @@ void AssemblyLine::updateAsseblyLine(bool leverOn, bool pickup, Player &player)
 	}
 }
 
-void AssemblyLine::drawAsseblyLine(sf::RenderWindow *window)
+void AssemblyLine::drawAsseblyLine(sf::RenderWindow *window, Player *player, int frames)
 {
 	// std::cout << "Drawing AssemblyLine\n";
 	static int i;
@@ -274,10 +354,13 @@ void AssemblyLine::drawAsseblyLine(sf::RenderWindow *window)
 	if (first_spwan_square_rotated == true)
 		window->draw(this->square_rotated);
 
-
-	window->draw(this->destination);
-	window->draw(this->drop_square);
-
-
+	drawDestination(window);
+	player->drawPlayer(frames, window, this->partName);
 	window->draw(this->factory);
 }
+
+std::string AssemblyLine::getPartName()
+{
+	return this->partName;
+}
+

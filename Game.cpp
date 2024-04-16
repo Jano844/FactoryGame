@@ -43,7 +43,7 @@ void	Game::initLever() {
 		exit(1);
 	}
 	this->lever1.setTexture(this->lever1_texture);
-	this->lever1.setPosition(0, 350);
+	this->lever1.setPosition(0, 345);
 
 	if (!this->lever2_texture.loadFromFile(LEVER_ON))
 	{
@@ -51,7 +51,7 @@ void	Game::initLever() {
 		exit(1);
 	}
 	this->lever2.setTexture(this->lever2_texture);
-	this->lever2.setPosition(0, 350);
+	this->lever2.setPosition(0, 345);
 }
 
 void	Game::triggerLever()
@@ -77,6 +77,7 @@ Game::Game() : mouse(3) {
 	initLever();
 	player = new Player();
 	assemblyLine = new AssemblyLine();
+	this->partName = "";
 }
 
 
@@ -176,14 +177,13 @@ void	Game::render() {
 
 	// draw Game
 	window->draw(this->sBackground);
-	player->drawPlayer(frames, window);
+	assemblyLine->drawAsseblyLine(window, player, frames);
 
 	if (leverOn == true)
 		window->draw(this->lever2);
 	else
 		window->draw(this->lever1);
 
-	assemblyLine->drawAsseblyLine(window);
 
 
 	drawMouse();

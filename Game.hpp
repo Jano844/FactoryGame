@@ -6,6 +6,9 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <cstdlib>
+#include <ctime>
+#include <unistd.h> // For usleep()
 
 
 #include <SFML/Window.hpp>
@@ -22,6 +25,9 @@
 #define PLAYER "textures/Done.png"
 #define LEVER_ON "textures/Lever1.png"
 #define LEVER_OFF "textures/Lever2.png"
+#define PORTAL "textures/Portal.png"
+#define PORTALDIFFX 80
+#define PORTALDIFFY 64
 
 #define OFFSETX 64
 #define OFFSETY 64
@@ -57,6 +63,7 @@ private:
 
 	// Player
 	Player *player;
+	std::string partName;
 
 	//AssemblyLine
 	AssemblyLine *assemblyLine;

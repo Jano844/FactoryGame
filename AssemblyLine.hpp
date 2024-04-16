@@ -39,6 +39,11 @@ private:
 	void layBack(Player &player);
 
 	void initDestionation();
+	void resetDestination();
+	void drawDestination(sf::RenderWindow *window);
+	void dropPart(Player &player);
+	bool newDestination;
+	std::string destinationName;
 	sf::RectangleShape destination;
 	sf::CircleShape drop_triangle;
 	sf::CircleShape drop_square_rotated;
@@ -51,5 +56,7 @@ public:
 	~AssemblyLine();
 
 	void	updateAsseblyLine(bool leverOn, bool pickup, Player &player);
-	void	drawAsseblyLine(sf::RenderWindow *window);
+	void	drawAsseblyLine(sf::RenderWindow *window, Player *player, int frames);
+
+	std::string getPartName();
 };
